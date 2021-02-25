@@ -1,37 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
 	<title>CRM</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	
+	<!--link to load the static files-->
+	<link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}"
 
-
-	<style>
-		
-		#logo{
-		}
-
-		body{
-			background-color: #ebeff5;
-		}
-
-
-		#total-orders{
-			background-color: #4cb4c7;
-		}
-
-
-		#orders-delivered{
-			background-color: #7abecc;
-		}
-
-		#orders-pending{
-			background-color: #7CD1C0;
-		}
-
-
-
-
-	</style>
+	<style></style>
 </head>
 <body>
 	{%  include 'accounts/navbar.html' %}
@@ -42,12 +19,12 @@
 
 	{% endblock %}
     </div>
-	<hr>
+	<hr><br><br>
 	<footer class="bg-light text-center text-lg-start">
             <!-- Copyright -->
             <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
                 © 2020 Copyright:
-                <a class="text-dark" href="#">Restaurents.com</a>
+                <a class="text-dark" href="#">CRM.com</a>
             </div>
             <!-- Copyright -->
     </footer>
