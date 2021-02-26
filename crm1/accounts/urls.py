@@ -9,6 +9,8 @@ urlpatterns = [
 
     path("", home, name="home"),
     path("user/", views.userPage, name="user-page"),
+    path("account/", views.accountSettings, name="account"),
+
     path("products/", products, name="products"),
     path("customers/<str:pk_test>/", customer, name="customer"),
     path("create_order/<str:pk>/", createOrder, name="create_order"),

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from accounts.models import Product, Customer, Order
-from accounts.forms import OrderForm, CreateUserForm
+from accounts.forms import OrderForm, CreateUserForm, CustomerForm
 from django.forms import inlineformset_factory
 from accounts.filters import OrderFilter
 from django.contrib.auth import authenticate, login, logout
@@ -22,6 +22,9 @@ def registerPage(request):
             username = form.cleaned_data.get('username')
             group = Group.objects.get(name='customer')
             user.groups.add(group)
+            customer.objjects.create(
+                user=user,
+            )
             messages.success(request, 'Account was created for ' + username)
 
             return redirect('login')
@@ -47,6 +50,8 @@ def loginPage(request):
     context = {}
     return render(request, 'accounts/login.html', context)
 
+
+
 def logoutUser(request):
 	logout(request) 
 	return redirect('login')
@@ -70,10 +75,31 @@ def home(request):
     }
     return render(request, "accounts/dashboard.html", context)
 
-
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
 def userPage(request):
-	context = {}
-	return render(request, 'accounts/user.html', context)
+    orders = request.user.customer.order_set.all()
+
+    total_orders = orders.count()
+    delivered = orders.filter(status='Delivered').count()
+    pending = orders.filter(status='Pending').count
+
+    context = {'orders':orders, 'total_orders':total_orders,
+     'delivered':delivered, 'pending':pending }
+    return render(request,'accounts/user.html',context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
+def accountSettings(request):
+    customer = request.user.customer
+    form = CustomerForm(instance=customer)
+    if request.method == "POST":
+        form = CustomerForm(request.POST, request.FILES, reinstance=customer)
+        if form.is_valid():
+            form.save()
+            
+    context = {'form': form}
+    return render(request, "accounts/accounts_settings.html", context)
 
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['admin'])
